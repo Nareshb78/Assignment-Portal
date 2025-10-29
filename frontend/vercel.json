@@ -1,9 +1,12 @@
-
 {
   "rewrites": [
     {
       "source": "/api/(.*)",
       "destination": "https://assignment-portal-ao0m.onrender.com/api/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/"
     }
   ]
 }

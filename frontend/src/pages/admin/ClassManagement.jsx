@@ -130,106 +130,109 @@ const AdminClassManagement = () => {
   };
 
   const ClassTable = useMemo(
-    () => ({ classes }) => (
-      <div className="relative overflow-x-auto bg-surface rounded-xl shadow-[0_0_20px_rgba(186,104,200,0.1)] border border-[#2f2f2f]">
-        {fetchLoading && (
-          <div className="absolute inset-0 bg-black/40 flex items-center justify-center rounded-xl z-10">
-            <Loader size="sm" message="Refreshing class data..." />
-          </div>
-        )}
+  () => ({ classes }) => (
+    <div className="relative overflow-x-auto bg-surface rounded-xl shadow-[0_0_20px_rgba(186,104,200,0.1)] border border-[#2f2f2f]">
+      {fetchLoading && (
+        <div className="absolute inset-0 bg-black/40 flex items-center justify-center rounded-xl z-10">
+          <Loader size="sm" message="Refreshing class data..." />
+        </div>
+      )}
 
-        <table className="min-w-full divide-y divide-gray-700">
-          <thead className="bg-[#2b2b2b]">
-            <tr>
-              <th className="px-4 py-3 text-left text-xs font-semibold text-[#ba68c8] uppercase whitespace-nowrap">
-                Title / Code
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold text-[#ba68c8] uppercase whitespace-nowrap">
-                Students
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold text-[#ba68c8] uppercase whitespace-nowrap">
-                Current Teacher
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold text-[#ba68c8] uppercase whitespace-nowrap">
-                Reassign Teacher
-              </th>
-              <th className="px-4 py-3 text-right text-xs font-semibold text-[#ba68c8] uppercase whitespace-nowrap">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-800">
-            {classes.map((c) => {
-              const studentCount = c.members.filter(
-                (m) => m.roleInClass === "student"
-              ).length;
-              const currentTeacher =
-                teachers.find((t) => t._id === c.teacherId) || {
-                  name: "N/A",
-                  _id: "",
-                };
+      <table className="min-w-full divide-y divide-gray-700">
+        <thead className="bg-[#2b2b2b]">
+          <tr>
+            <th className="px-4 py-3 text-left text-xs font-semibold text-[#ba68c8] uppercase whitespace-nowrap">
+              Title / Code
+            </th>
+            <th className="px-4 py-3 text-left text-xs font-semibold text-[#ba68c8] uppercase whitespace-nowrap">
+              Students
+            </th>
+            <th className="px-4 py-3 text-left text-xs font-semibold text-[#ba68c8] uppercase whitespace-nowrap">
+              Current Teacher
+            </th>
+            <th className="px-4 py-3 text-left text-xs font-semibold text-[#ba68c8] uppercase whitespace-nowrap">
+              Reassign Teacher
+            </th>
+            <th className="px-4 py-3 text-right text-xs font-semibold text-[#ba68c8] uppercase whitespace-nowrap">
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-800">
+          {classes.map((c) => {
+            const studentCount = c.members.filter(
+              (m) => m.roleInClass === "student"
+            ).length;
+            const currentTeacher =
+              teachers.find((t) => t._id === c.teacherId) || {
+                name: "N/A",
+                _id: "",
+              };
 
-              return (
-                <tr key={c._id} className="hover:bg-[#2b2b2b] transition-colors">
-                  <td className="px-4 py-3 text-sm font-medium text-[#e0e0e0] whitespace-nowrap">
-                    {c.title}
-                    <span className="block text-xs text-[#bdbdbd] font-mono">
-                      {c.code}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-sm text-[#e0e0e0] whitespace-nowrap">
-                    <span className="flex items-center">
-                      <Users className="h-4 w-4 mr-2 text-accentSecondary" />
-                      {studentCount}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-sm text-[#ba68c8] whitespace-nowrap">
-                    {c.teacherId?.name || currentTeacher.name}
-                  </td>
-                  <td className="px-4 py-3 flex items-center space-x-2 text-sm text-[#bdbdbd] whitespace-nowrap">
-                    <div className="relative">
-                      <select
-                        value={
-                          selectedTeacherId[c._id] ||
-                          currentTeacher._id ||
-                          ""
-                        }
-                        onChange={(e) => handleTeacherChange(c._id, e)}
-                        className="bg-gray-700 border border-gray-600 text-[#e0e0e0] rounded-md py-1.5 pl-3 pr-6 focus:ring-[#ba68c8] focus:border-[#ba68c8] text-xs sm:text-sm w-36 sm:w-44"
-                      >
-                        <option value="">Select</option>
-                        {teachers.map((t) => (
-                          <option key={t._id} value={t._id}>
-                            {t.name}
-                          </option>
-                        ))}
-                      </select>
-                      <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-4 w-4 text-[#bdbdbd]" />
-                    </div>
-                    <button
-                      onClick={() => handleReassignTeacher(c._id)}
-                      className="p-1 rounded-full bg-[#ba68c8] hover:bg-violet-700 transition-colors shadow-md"
+            return (
+              <tr key={c._id} className="hover:bg-[#2b2b2b] transition-colors">
+                <td className="px-4 py-3 text-sm font-medium text-[#e0e0e0] whitespace-nowrap">
+                  {c.title}
+                  <span className="block text-xs text-[#bdbdbd] font-mono">
+                    {c.code}
+                  </span>
+                </td>
+                <td className="px-4 py-3 text-sm text-[#e0e0e0] whitespace-nowrap">
+                  <span className="flex items-center">
+                    <Users className="h-4 w-4 mr-2 text-accentSecondary" />
+                    {studentCount}
+                  </span>
+                </td>
+                <td className="px-4 py-3 text-sm text-[#ba68c8] whitespace-nowrap">
+                  {c.teacherId?.name || currentTeacher.name}
+                </td>
+                <td className="px-4 py-3 flex items-center space-x-2 text-sm text-[#bdbdbd] whitespace-nowrap">
+                  <div className="relative">
+                    <select
+                      value={
+                        selectedTeacherId[c._id] ||
+                        currentTeacher._id ||
+                        ""
+                      }
+                      onChange={(e) => handleTeacherChange(c._id, e)}
+                      className="appearance-none bg-gray-700 border border-gray-600 text-[#e0e0e0] rounded-md py-1.5 pl-3 pr-8 focus:ring-[#ba68c8] focus:border-[#ba68c8] text-xs sm:text-sm w-36 sm:w-44 cursor-pointer"
                     >
-                      <RefreshCw className="h-4 w-4 text-white" />
-                    </button>
-                  </td>
-                  <td className="px-4 py-3 text-right text-sm whitespace-nowrap">
-                    <button
-                      onClick={() => handleDeleteClass(c._id, c.title)}
-                      className="text-red-500 hover:text-red-300 p-1 rounded-full hover:bg-[#333333]"
-                    >
-                      <Trash2 className="h-5 w-5" />
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    ),
-    [teachers, selectedTeacherId, fetchLoading]
-  );
+                      <option value="">Select</option>
+                      {teachers.map((t) => (
+                        <option key={t._id} value={t._id}>
+                          {t.name}
+                        </option>
+                      ))}
+                    </select>
+                    {/* Only one ChevronDown icon */}
+                    <ChevronDown className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 h-4 w-4 text-[#bdbdbd]" />
+                  </div>
+
+                  <button
+                    onClick={() => handleReassignTeacher(c._id)}
+                    className="p-1 rounded-full bg-[#ba68c8] hover:bg-violet-700 transition-colors shadow-md"
+                  >
+                    <RefreshCw className="h-4 w-4 text-white" />
+                  </button>
+                </td>
+                <td className="px-4 py-3 text-right text-sm whitespace-nowrap">
+                  <button
+                    onClick={() => handleDeleteClass(c._id, c.title)}
+                    className="text-red-500 hover:text-red-300 p-1 rounded-full hover:bg-[#333333]"
+                  >
+                    <Trash2 className="h-5 w-5" />
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  ),
+  [teachers, selectedTeacherId, fetchLoading]
+);
+
 
   return (
     <div className="space-y-8 sm:space-y-10">
