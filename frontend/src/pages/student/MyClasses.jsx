@@ -1,4 +1,4 @@
-// src/pages/student/MyClasses.jsx (FIXED)
+// src/pages/student/MyClasses.jsx (FINAL FIX for Input Stability)
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,7 +7,6 @@ import { fetchMyClasses } from '../../redux/slices/classSlice';
 import { UserPlus ,Book, Search, User, Grid2X2, BookMarked, Layers } from 'lucide-react';
 import Pagination from '../../components/common/Pagination';
 import Loader from '../../components/common/Loader';
-// import { theme } from '../../assets/theme'; // Assuming tailwind handles the colors directly
 import JoinClassModal from '../../components/common/JoinClassModal';
 
 const MyClasses = () => {
@@ -21,7 +20,7 @@ const MyClasses = () => {
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // Debounce search input to limit API calls
+    // --- 1. Debounce Search Input (Updates API query term) ---
     useEffect(() => {
         const timer = setTimeout(() => {
             setDebouncedSearchTerm(searchTerm);
@@ -29,7 +28,17 @@ const MyClasses = () => {
         return () => clearTimeout(timer);
     }, [searchTerm]);
 
-    // Fetch data
+    // --- 2. Separate Effect to Reset Page (CRITICAL for fixing focus loss) ---
+    // This runs AFTER debouncedSearchTerm updates. If the search term changed, it resets the page to 1.
+    useEffect(() => {
+        // Only reset the page if we detect a new search term has stabilized AND the current page is not 1.
+        if (currentPage !== 1) {
+            setCurrentPage(1);
+        }
+    }, [debouncedSearchTerm]); 
+
+
+    // --- 3. Main Data Fetch ---
     useEffect(() => {
         dispatch(fetchMyClasses({ 
             page: currentPage, 
@@ -38,10 +47,16 @@ const MyClasses = () => {
         }));
     }, [dispatch, currentPage, debouncedSearchTerm]);
 
-    // **FIX 1: Define handleModalClose (CRITICAL for refetching classes)**
+    // --- Handlers ---
+    
+    // FIX: This handler only updates the search term, preventing a render collision with setCurrentPage.
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
     const handleModalClose = () => {
         setIsModalOpen(false);
-        // Refetch data immediately after modal closes to show the newly joined class
+        // Refetch data immediately after modal closes (uses existing currentPage/debouncedSearchTerm state)
         dispatch(fetchMyClasses({ 
             page: currentPage, 
             limit: 8, 
@@ -53,11 +68,6 @@ const MyClasses = () => {
         setCurrentPage(page);
     }, []);
 
-    const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value);
-        setCurrentPage(1); 
-    };
-
     if (isLoading && myClasses.length === 0) {
         return <Loader message="Loading your classes..." />;
     }
@@ -65,7 +75,6 @@ const MyClasses = () => {
     // --- UI Components ---
 
     const ClassCard = ({ classData }) => {
-        // Adopting the benchmark's glow, border, and hover scale
         return (
             <Link 
                 to={`/student/classes/${classData._id}/assignments`}
@@ -94,29 +103,25 @@ const MyClasses = () => {
 
     return (
         <div className="space-y-8 sm:space-y-10">
-            {/* HEADER SECTION - KEY CHANGE 1: Stacks on mobile, separates on medium screens */}
+            {/* HEADER SECTION */}
             <header className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-gray-700 pb-4 space-y-4 md:space-y-0">
-                {/* Title - KEY CHANGE 2: Reduced font size for mobile */}
                 <h1 className="text-3xl sm:text-4xl font-extrabold text-[#e0e0e0] tracking-wide">
                     Welcome back, <span className="text-[#03DAC6]">{user?.name}!</span> 👋
                 </h1>
                 
-                {/* Buttons - KEY CHANGE 3: Use flex-wrap and reduced padding/margin for mobile */}
                 <div className='flex gap-2 sm:gap-4 flex-wrap'>
-                    {/* Join Class Button (Primary Accent) */}
+                    {/* Join Class Button */}
                     <button
                         onClick={() => setIsModalOpen(true)}
-                        // KEY CHANGE 4: Reduced padding and text size for mobile
-                        className="border border-[#ba68c8] text-[#ba68c8] py-2 px-3 sm:py-2.5 sm:px-6 rounded-full shadow-lg hover:bg-[#ba68c8]/10 transition-all duration-300 flex items-center font-medium transform hover:scale-[1.05] text-sm flex-shrink-0"
+                        className="border border-[#ba68c8] text-[#ba68c8] py-2 px-3 sm:py-2.5 sm:px-6 rounded-full shadow-lg hover:bg-[#ba68c8]/10 transition-all duration-300 flex items-center font-medium transform hover:scale-[1.05] text-sm shrink-0"
                     >
                         <UserPlus className="h-4 w-4 mr-1 sm:mr-2" /> <span className='hidden sm:inline'>Join Class</span>
                     </button>
 
-                    {/* My Submissions Button (Secondary Accent) */}
+                    {/* My Submissions Button */}
                     <Link 
                         to="/student/submissions/me" 
-                        // KEY CHANGE 5: Reduced padding and text size for mobile
-                        className="bg-[#03DAC6] text-white py-2 px-3 sm:py-2.5 sm:px-6 rounded-full shadow-lg hover:bg-teal-600 transition-all duration-300 flex items-center font-medium transform hover:scale-[1.05] text-sm flex-shrink-0"
+                        className="bg-[#03DAC6] text-white py-2 px-3 sm:py-2.5 sm:px-6 rounded-full shadow-lg hover:bg-teal-600 transition-all duration-300 flex items-center font-medium transform hover:scale-[1.05] text-sm shrink-0"
                     >
                         <BookMarked className="h-4 w-4 mr-1 sm:mr-2" /> My Submissions
                     </Link>
@@ -124,7 +129,6 @@ const MyClasses = () => {
             </header>
 
             {/* Search Input Area */}
-            {/* No changes needed: Already full-width with internal icon padding */}
             <div className="relative">
                 <input
                     type="text"
@@ -136,8 +140,7 @@ const MyClasses = () => {
                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-[#03DAC6]" />
             </div>
 
-            {/* Class Grid - KEY CHANGE 6: Ensured responsive grid flow */}
-            {/* The grid columns already handle responsiveness well: 1 column default, 2 on MD, 4 on LG. */}
+            {/* Class Grid */}
             {myClasses.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"> 
                     {myClasses.map((classItem) => (

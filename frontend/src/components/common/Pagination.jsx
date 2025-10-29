@@ -101,7 +101,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       <button
         onClick={() => handlePageClick(currentPage - 1)}
         disabled={currentPage === 1}
-        className="flex-shrink-0 p-2 rounded-lg bg-gray-800 text-[#e0e0e0] hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        className="shrink-0 p-2 rounded-lg bg-gray-800 text-[#e0e0e0] hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
       >
         <ChevronLeft className="h-5 w-5" />
       </button>
@@ -117,7 +117,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       <button
         onClick={() => handlePageClick(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="flex-shrink-0 p-2 rounded-lg bg-gray-800 text-[#e0e0e0] hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        className="shrink-0 p-2 rounded-lg bg-gray-800 text-[#e0e0e0] hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
       >
         <ChevronRight className="h-5 w-5" />
       </button>

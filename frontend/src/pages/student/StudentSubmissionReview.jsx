@@ -69,7 +69,7 @@ const StudentSubmissionReview = () => {
     return (
       <div className="flex justify-between items-center bg-gray-800 p-3 rounded-lg border border-gray-700 hover:bg-gray-700 transition-colors">
         <div className="flex items-center truncate">
-          <Icon className={`h-4 w-4 mr-2 flex-shrink-0 ${iconColor}`} />
+          <Icon className={`h-4 w-4 mr-2 shrink-0 ${iconColor}`} />
           <span className="text-sm text-[#e0e0e0] truncate">{item.name}</span>
         </div>
         <a

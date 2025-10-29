@@ -1,4 +1,4 @@
-// src/pages/student/StudentMySubmissionsList.jsx (NEW FILE)
+// src/pages/student/StudentMySubmissionsList.jsx (FINAL FIX for Input Stability)
 
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,18 +29,40 @@ const StudentMySubmissionsList = () => {
   const { mySubmissions = {}, isLoading } = useSelector(
     (state) => state.submissions || {}
   );
-  const { items: submissions = [], pagination = { pages: 0, total: 0 } } = mySubmissions;
+  const { items: submissions = [], pagination = { pages: 0, total: 0 } } =
+    mySubmissions;
 
   const [currentPage, setCurrentPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState("");
 
-  // Fetch data whenever filters/page change
+  // Search states (added for consistency, though currently unused in fetch)
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+
+  // --- 1. Debounce Logic (Kept separate) ---
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  // --- 2. Separate Effect to Reset Page ---
+  // This runs AFTER the debounced term changes, ensuring we reset page 1 only when the user finishes typing.
+  useEffect(() => {
+    // If the current page is not 1 AND the debounced search term is set, reset page.
+    if (currentPage !== 1) {
+      setCurrentPage(1);
+    }
+  }, [debouncedSearchTerm]);
+
+  // Fetch data whenever filters/page change (now correctly triggered by currentPage/statusFilter)
   useEffect(() => {
     dispatch(
       fetchMySubmissions({
         page: currentPage,
         limit: 10,
-        status: statusFilter, // Uses the filter defined in statusOptions
+        status: statusFilter,
       })
     );
   }, [dispatch, currentPage, statusFilter]);
@@ -49,9 +71,16 @@ const StudentMySubmissionsList = () => {
     setCurrentPage(page);
   }, []);
 
+  // FIX 1: This handler only updates the input state, preventing the cursor reset.
   const handleFilterChange = (e) => {
     setStatusFilter(e.target.value);
-    setCurrentPage(1);
+    // REMOVED: setCurrentPage(1) from here!
+  };
+
+  // FIX 2: Handler for the Search input (if one is ever added)
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    // REMOVED: setCurrentPage(1)
   };
 
   const getStatusBadge = (status) => {
@@ -69,7 +98,6 @@ const StudentMySubmissionsList = () => {
     }
 
     return (
-      // KEY CHANGE 1: Reduced padding for compactness
       <span
         className={`px-2 py-0.5 rounded-full text-xs font-semibold uppercase ${style} ${color} whitespace-nowrap`}
       >
@@ -84,27 +112,23 @@ const StudentMySubmissionsList = () => {
 
   return (
     <div className="space-y-8 sm:space-y-10">
-      
       {/* HEADER SECTION */}
       <header className="pb-4 border-b border-gray-700">
-        {/* KEY CHANGE 2: Reduced header text size for mobile */}
         <h1 className="text-3xl sm:text-4xl font-extrabold text-[#e0e0e0] tracking-wider flex items-center">
-          <BookMarked className="h-7 w-7 sm:h-8 sm:w-8 mr-3 text-[#03DAC6] flex-shrink-0" />
+          <BookMarked className="h-7 w-7 sm:h-8 sm:w-8 mr-3 text-[#03DAC6] shrink-0" />
           My Submissions History
         </h1>
-        {/* KEY CHANGE 3: Reduced paragraph text size for mobile */}
         <p className="text-[#bdbdbd] mt-1 text-sm sm:text-lg">
           Review scores and feedback for your past assignments.
         </p>
       </header>
 
       {/* Controls: Filter */}
-      {/* KEY CHANGE 4: Use flex-col on mobile, space-y for stacking */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
-        <h3 className="text-lg sm:text-xl font-bold text-[#bdbdbd] flex items-center flex-shrink-0">
+        <h3 className="text-lg sm:text-xl font-bold text-[#bdbdbd] flex items-center shrink-0">
           Total Submissions: {pagination.total || 0}
         </h3>
-        {/* Filter by Status - KEY CHANGE 5: Reduced width on mobile */}
+        {/* Filter by Status */}
         <div className="relative w-full sm:w-48">
           <select
             value={statusFilter}
@@ -124,12 +148,10 @@ const StudentMySubmissionsList = () => {
 
       {/* Submissions Table */}
       {submissions.length > 0 ? (
-        // KEY CHANGE 6: overflow-x-auto is the core responsiveness for the table
         <div className="overflow-x-auto bg-surface rounded-xl shadow-lg border border-[#2f2f2f]">
           <table className="min-w-full divide-y divide-gray-700">
             <thead className="bg-[#2b2b2b]">
               <tr>
-                {/* KEY CHANGE 7: Reduced padding and added whitespace-nowrap to headers */}
                 <th className="px-4 py-3 text-left text-xs font-semibold text-[#ba68c8] uppercase tracking-wider whitespace-nowrap">
                   Assignment / Class
                 </th>
@@ -153,7 +175,6 @@ const StudentMySubmissionsList = () => {
                   key={sub._id}
                   className="hover:bg-[#2b2b2b] transition-colors"
                 >
-                  {/* KEY CHANGE 8: Reduced padding and ensured content doesn't break */}
                   <td className="px-4 py-3 text-sm font-medium text-[#e0e0e0] whitespace-nowrap">
                     {sub.assignmentId?.title || "N/A"}
                     <span className="block text-xs text-[#bdbdbd] font-normal">
@@ -161,7 +182,6 @@ const StudentMySubmissionsList = () => {
                     </span>
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-xs sm:text-sm text-[#bdbdbd]">
-                    {/* Used toLocaleDateString for mobile friendliness */}
                     {new Date(sub.submittedAt).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap">
@@ -170,8 +190,8 @@ const StudentMySubmissionsList = () => {
                   <td className="px-4 py-3 whitespace-nowrap text-xs sm:text-sm font-bold">
                     {sub.status === "graded" ? (
                       <span className="text-[#03DAC6] flex items-center">
-                        <Award size={14} className="mr-1 flex-shrink-0" /> {sub.grade?.score}/
-                        {sub.assignmentId?.maxScore || 100}
+                        <Award size={14} className="mr-1 shrink-0" />{" "}
+                        {sub.grade?.score}/{sub.assignmentId?.maxScore || 100}
                       </span>
                     ) : (
                       <span className="text-yellow-400">Pending</span>
@@ -183,7 +203,8 @@ const StudentMySubmissionsList = () => {
                       to={`/student/submissions/${sub._id}`}
                       className="text-[#03DAC6] hover:text-[#ba68c8] transition-colors flex items-center justify-end font-semibold transform hover:scale-105 text-xs sm:text-sm"
                     >
-                      View Details <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 ml-1 flex-shrink-0" />
+                      View Details{" "}
+                      <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 ml-1 shrink-0" />
                     </Link>
                   </td>
                 </tr>
