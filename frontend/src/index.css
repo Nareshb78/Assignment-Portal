@@ -1,0 +1,22 @@
+@import "tailwindcss";
+body {
+  background-color: #121212;
+  color: #E0E0E0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Inter', sans-serif;
+}
+
+select {
+  /* This helps enforce consistent colors on the select box itself */
+  color: #e0e0e0; 
+  background-color: #1e1e1e;
+}
+
+/* This is the critical part that styles the actual dropdown menu */
+select option {
+  /* Forces the option text to be visible */
+  color: #e0e0e0 !important; 
+  /* Ensures the options have a dark background */
+  background-color: #1e1e1e !important; 
+}
