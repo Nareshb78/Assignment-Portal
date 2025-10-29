@@ -124,10 +124,10 @@ const TeacherGradeView = () => {
         {/* KEY CHANGE 2: Reduced header text size for mobile */}
         <h1 className="text-3xl sm:text-4xl font-extrabold text-[#e0e0e0] tracking-wider flex flex-col sm:flex-row items-start sm:items-center">
           <div className="flex items-center mb-2 sm:mb-0">
-            <Edit3 className="h-7 w-7 sm:h-8 sm:w-8 mr-3 text-[#ba68c8] flex-shrink-0" />
+            <Edit3 className="h-7 w-7 sm:h-8 sm:w-8 mr-3 text-[#ba68c8] shrink-0" />
             Grade Review:{" "}
           </div>
-          <span className="text-[#03DAC6] ml-0 sm:ml-2 text-3xl sm:text-4xl break-words">
+          <span className="text-[#03DAC6] ml-0 sm:ml-2 text-3xl sm:text-4xl wrap-break-words">
             {studentName}
           </span>
         </h1>
@@ -282,13 +282,13 @@ const TeacherGradeView = () => {
                   >
                     <span className="flex items-center text-[#e0e0e0] font-medium truncate">
                       {item.contentType === "link" ? (
-                        <LinkIcon className="h-5 w-5 mr-3 text-[#ba68c8] flex-shrink-0" />
+                        <LinkIcon className="h-5 w-5 mr-3 text-[#ba68c8] shrink-0" />
                       ) : (
-                        <Download className="h-5 w-5 mr-3 text-[#03DAC6] flex-shrink-0" />
+                        <Download className="h-5 w-5 mr-3 text-[#03DAC6] shrink-0" />
                       )}
                       {item.fileName || item.url}
                     </span>
-                    <span className="text-xs text-[#bdbdbd] uppercase ml-2 flex-shrink-0">
+                    <span className="text-xs text-[#bdbdbd] uppercase ml-2 shrink-0">
                       {item.contentType || "Link"}
                     </span>
                   </a>

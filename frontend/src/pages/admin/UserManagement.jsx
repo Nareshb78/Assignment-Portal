@@ -200,7 +200,7 @@ const UserManagement = () => {
       {/* KEY CHANGE 7: Changed to 'flex-col sm:flex-row' to stack on small mobile screens */}
       <div className="flex flex-col sm:flex-row gap-4">
         {/* Search */}
-        <div className="relative flex-grow group">
+        <div className="relative grow group">
           <input
             type="text"
             placeholder="Search users by name or email..."
@@ -212,7 +212,7 @@ const UserManagement = () => {
         </div>
 
         {/* Filter by Role */}
-        <div className="relative flex-shrink-0">
+        <div className="relative shrink-0">
           <select
             value={roleFilter}
             onChange={handleRoleChange}

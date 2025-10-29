@@ -88,13 +88,13 @@ const TeacherRosterModal = ({ isOpen, onClose, classId, classTitle }) => {
       <div className="bg-surface p-6 sm:p-8 rounded-xl shadow-2xl w-full max-w-2xl border border-[#2f2f2f] max-h-full sm:max-h-[80vh] overflow-y-auto">
         <div className="flex justify-between items-start border-b border-gray-700 pb-3 mb-6">
           {/* KEY CHANGE 3: Reduced font size on mobile and ensured text wrapping with 'break-words' */}
-          <h2 className="text-xl sm:text-2xl font-bold text-[#ba68c8] flex items-start break-words pr-4">
-            <Users size={24} className="mr-2 flex-shrink-0" /> Roster for:{" "}
+          <h2 className="text-xl sm:text-2xl font-bold text-[#ba68c8] flex items-start wrap-break-words pr-4">
+            <Users size={24} className="mr-2 shrink-0" /> Roster for:{" "}
             <span className="ml-1">{classTitle}</span>
           </h2>
           <button
             onClick={onClose}
-            className="text-[#bdbdbd] hover:text-red-400 flex-shrink-0"
+            className="text-[#bdbdbd] hover:text-red-400 shrink-0"
           >
             <X size={24} />
           </button>
@@ -106,7 +106,7 @@ const TeacherRosterModal = ({ isOpen, onClose, classId, classTitle }) => {
           <span className="font-semibold text-[#bdbdbd] flex items-center">
             <ChevronDown
               size={16}
-              className="mr-2 text-yellow-400 flex-shrink-0"
+              className="mr-2 text-yellow-400 shrink-0"
             />{" "}
             Class Code:
           </span>
@@ -162,7 +162,7 @@ const TeacherRosterModal = ({ isOpen, onClose, classId, classTitle }) => {
                         <td className="px-3 py-3 text-sm text-[#e0e0e0] flex items-center whitespace-nowrap">
                           <GraduationCap
                             size={16}
-                            className="mr-2 text-accentSecondary flex-shrink-0"
+                            className="mr-2 text-accentSecondary shrink-0"
                           />
                           {userName}
                         </td>

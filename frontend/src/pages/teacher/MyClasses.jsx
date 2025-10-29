@@ -122,7 +122,7 @@ const TeacherDashboard = () => {
                 <p className="text-[#bdbdbd] text-xs sm:text-sm font-medium uppercase tracking-wider">{title}</p>
                 <h2 className="text-2xl sm:text-3xl font-bold text-[#e0e0e0] mt-1">{value}</h2>
             </div>
-            <div className={`p-3 rounded-full ${bg} flex-shrink-0`}>
+            <div className={`p-3 rounded-full ${bg} shrink-0`}>
                 <Icon size={24} className={color} />
             </div>
         </div>
@@ -135,7 +135,7 @@ const TeacherDashboard = () => {
             {/* Class Code Display */}
             <div className="flex items-center justify-between text-base mb-4 bg-gray-800 p-2 rounded-lg border border-gray-700">
                 <span className="font-semibold text-[#bdbdbd] flex items-center text-sm">
-                    <KeyRound className="h-4 w-4 mr-2 text-[#03DAC6] flex-shrink-0" /> Class Code:
+                    <KeyRound className="h-4 w-4 mr-2 text-[#03DAC6] shrink-0" /> Class Code:
                 </span>
                 <span className="font-extrabold text-[#e0e0e0] tracking-widest cursor-text select-all text-sm">
                     {classData.code || 'N/A'} 
@@ -145,7 +145,7 @@ const TeacherDashboard = () => {
             {/* Old Details - Adjusted spacing */}
             <div className="flex justify-between text-xs sm:text-sm mb-4"> {/* KEY CHANGE 3: Reduced font size */}
                 <div className="flex items-center text-[#bdbdbd]">
-                    <User className="h-4 w-4 mr-1 flex-shrink-0" />
+                    <User className="h-4 w-4 mr-1 shrink-0" />
                     <span>Students: {classData.members.filter(m => m.roleInClass === 'student').length}</span>
                 </div>
                 <div className="text-[#bdbdbd] text-right">
@@ -159,13 +159,13 @@ const TeacherDashboard = () => {
                     to={`/teacher/classes/${classData._id}/assignments/create`}
                     className="flex-1 bg-[#ba68c8] text-white text-center py-2 px-3 rounded-lg hover:bg-violet-700 transition-colors flex items-center justify-center text-xs sm:text-sm font-medium"
                 >
-                    <Plus className="h-4 w-4 mr-1 flex-shrink-0" /> New Assignment
+                    <Plus className="h-4 w-4 mr-1 shrink-0" /> New Assignment
                 </Link>
                 <Link 
                     to={`/teacher/classes/${classData._id}/assignments`}
                     className="flex-1 border border-[#ba68c8] text-[#ba68c8] text-center py-2 px-3 rounded-lg hover:bg-[#ba68c8]/10 transition-colors flex items-center justify-center text-xs sm:text-sm font-medium"
                 >
-                    Manage <ArrowRight className="h-4 w-4 ml-1 flex-shrink-0" />
+                    Manage <ArrowRight className="h-4 w-4 ml-1 shrink-0" />
                 </Link>
             </div>
         </div>

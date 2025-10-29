@@ -101,7 +101,7 @@ const TeacherSubmissionsQueue = () => {
         // KEY CHANGE 1: Reduced padding for compactness
         className={`px-2 py-0.5 rounded-full text-xs font-semibold uppercase ${style} flex items-center whitespace-nowrap`}
       >
-        <Icon className="h-3 w-3 mr-1 flex-shrink-0" /> {text}
+        <Icon className="h-3 w-3 mr-1 shrink-0" /> {text}
       </span>
     );
   };
@@ -136,7 +136,7 @@ const TeacherSubmissionsQueue = () => {
             <tr key={sub._id} className="hover:bg-[#2b2b2b] transition-colors">
               {/* KEY CHANGE 3: Reduced padding on all table cells */}
               <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-[#e0e0e0] flex items-center max-w-[150px] truncate">
-                <User className="h-4 w-4 mr-2 text-[#bdbdbd] flex-shrink-0" />
+                <User className="h-4 w-4 mr-2 text-[#bdbdbd] shrink-0" />
                 {sub.studentId?.name || "Unknown Student"}
               </td>
               <td className="px-4 py-3 whitespace-nowrap text-xs sm:text-sm text-[#bdbdbd]">
@@ -156,7 +156,7 @@ const TeacherSubmissionsQueue = () => {
                   // KEY CHANGE 4: Reduced font size and icon size for mobile
                   className="text-[#ba68c8] hover:text-[#03DAC6] transition-colors flex items-center justify-end font-semibold transform hover:scale-105 text-xs sm:text-sm"
                 >
-                  <Edit2 className="h-3 w-3 sm:h-4 sm:w-4 mr-1 flex-shrink-0" />{" "}
+                  <Edit2 className="h-3 w-3 sm:h-4 sm:w-4 mr-1 shrink-0" />{" "}
                   {sub.status === "graded" ? "View/Edit Grade" : "Grade Now"}
                 </Link>
               </td>
@@ -187,7 +187,7 @@ const TeacherSubmissionsQueue = () => {
             <Link
               to={`/teacher/classes/${classId}/assignments/${assignmentId}/analytics`}
               // KEY CHANGE 7: Reduced padding and font size for mobile
-              className="bg-[#03DAC6] text-white py-2 px-3 sm:py-2.5 sm:px-4 rounded-full shadow-md hover:bg-teal-600 transition-colors flex items-center text-xs sm:text-sm font-medium transform hover:scale-105 flex-shrink-0"
+              className="bg-[#03DAC6] text-white py-2 px-3 sm:py-2.5 sm:px-4 rounded-full shadow-md hover:bg-teal-600 transition-colors flex items-center text-xs sm:text-sm font-medium transform hover:scale-105 shrink-0"
             >
               <BarChart2 className="h-4 w-4 mr-1 sm:mr-2" /> View Analytics
             </Link>
@@ -197,7 +197,7 @@ const TeacherSubmissionsQueue = () => {
 
       {/* Controls: Filter - KEY CHANGE 8: Ensures controls stack on mobile */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
-        <h3 className="text-lg sm:text-xl font-bold text-[#bdbdbd] flex items-center flex-shrink-0">
+        <h3 className="text-lg sm:text-xl font-bold text-[#bdbdbd] flex items-center shrink-0">
           <ListOrdered className="h-5 w-5 mr-2 text-[#ba68c8]" /> Submissions List
         </h3>
         {/* Filter by Status - KEY CHANGE 9: Reduced width on mobile */}

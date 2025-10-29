@@ -65,10 +65,10 @@ const AssignmentAnalytics = () => {
         {/* KEY CHANGE 2: Reduced header text size for mobile and ensured content wrapping */}
         <h1 className="text-3xl sm:text-4xl font-extrabold text-[#e0e0e0] tracking-wider flex flex-col sm:flex-row items-start sm:items-center">
           <div className="flex items-center mb-2 sm:mb-0">
-            <BarChart2 className="h-7 w-7 sm:h-8 sm:w-8 mr-3 text-[#ba68c8] flex-shrink-0" />
+            <BarChart2 className="h-7 w-7 sm:h-8 sm:w-8 mr-3 text-[#ba68c8] shrink-0" />
             Grade Distribution:
           </div>
-          <span className="text-[#ba68c8] ml-0 sm:ml-2 text-2xl sm:text-4xl font-extrabold break-words">
+          <span className="text-[#ba68c8] ml-0 sm:ml-2 text-2xl sm:text-4xl font-extrabold wrap-break-words">
             {assignmentName}
           </span>
         </h1>
@@ -111,7 +111,7 @@ const AssignmentAnalytics = () => {
                   >
                     {/* Bar */}
                     <div
-                      className="w-6 sm:w-8 rounded-t-sm transition-all duration-500 hover:opacity-80 flex-shrink-0"
+                      className="w-6 sm:w-8 rounded-t-sm transition-all duration-500 hover:opacity-80 shrink-0"
                       style={{ height: height, backgroundColor: color }}
                     ></div>
 

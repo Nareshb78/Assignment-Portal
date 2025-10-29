@@ -15,7 +15,7 @@ const Layout = () => {
         3. mx-auto: Centering the content horizontally.
         4. p-4 sm:p-6 lg:p-8: Scaling padding with screen size.
       */}
-      <main className="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+      <main className="grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
        
         <div className="mt-4 md:mt-6">
             <Outlet />
